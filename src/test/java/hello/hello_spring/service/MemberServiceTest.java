@@ -7,7 +7,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -60,9 +63,29 @@ class MemberServiceTest {
     }
     @Test
     void findMembers() {
+        // given
+        Member member1 = new Member();
+        member1.setName("spring1");
+        memberService.join(member1);
+
+        Member member2 = new Member();
+        member2.setName("spring2");
+        memberService.join(member2);
+
+        // when
+        List<Member> result = memberService.findMembers();
+        // then
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @Test
     void findOne() {
+        Member member1 = new Member();
+        member1.setName("spring1");
+        memberService.join(member1);
+
+        Member member = memberService.findOne(member1.getId()).get();
+
+        assertThat(member.getName()).isEqualTo(member1.getName());
     }
 }
